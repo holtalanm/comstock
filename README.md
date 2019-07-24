@@ -1,4 +1,4 @@
-Comstock, the simpler alternative to Vuex.
+**Comstock**, the simpler alternative to Vuex.
 
 ## **This is a work-in-progress**
 
