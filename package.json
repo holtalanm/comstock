@@ -1,0 +1,37 @@
+{
+  "name": "comstock",
+  "version": "0.0.1",
+  "description": "Simple alternative to Vuex, written in TypeScript",
+  "main": "index.ts",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holtalanm/comstock.git"
+  },
+  "keywords": [
+    "vuex",
+    "store",
+    "vue",
+    "redux"
+  ],
+  "author": "Alan Holt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/holtalanm/comstock/issues"
+  },
+  "homepage": "https://github.com/holtalanm/comstock#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "@vue/test-utils": "^1.0.0-beta.29",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "@types/node": "^12.6.8",
+    "core-js": "^3.1.4",
+    "vue": "^2.6.10"
+  }
+}
