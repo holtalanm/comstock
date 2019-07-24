@@ -34,9 +34,9 @@ Options to be passed to the `StoreState` decorator.
 ```ts
 //in ExampleRootStore.ts
 
-import { RootState, StoreState } from 'comstock';
+import { RootStore, StoreState } from 'comstock';
 
-class ExampleRootStore extends RootState {
+class ExampleRootStore extends RootStore {
 
     @StoreState({ defaultValue: 'foo' })
     public foo!: string;
