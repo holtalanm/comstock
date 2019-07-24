@@ -61,4 +61,4 @@ import ExampleRootStore from './ExampleRootStore';
 Vue.use(ExampleRootStore);
 ```
 
-And that's it!  Your root state should be available within your `*.vue` components as `this.$store`.
+And that's it!  Your root store should be available within your `*.vue` components as `this.$store`.
