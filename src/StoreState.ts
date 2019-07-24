@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Store from './Store';
 
-export interface StoreStateOptions<T> {
+interface StoreStateOptions<T> {
     defaultValue: T;
 }
 
