@@ -9,4 +9,10 @@ export default class Store {
             };
         },
     });
+
+    constructor() {
+        this.vueInternal.$watch(function() { return this._data.$$state; }, () => {
+            // Do Nothing
+        }, { deep: true, sync: true });
+    }
 }

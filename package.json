@@ -3,7 +3,7 @@
   "version": "0.0.5",
   "description": "Simple alternative to Vuex, written in TypeScript",
   "main": "index.ts",
-  "types": "index.d.ts",
+  "typings": "src/types/index.d.ts",
   "scripts": {
     "test": "test"
   },

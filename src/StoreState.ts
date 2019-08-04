@@ -1,9 +1,7 @@
 import Vue from 'vue';
 import Store from './Store';
+import { StoreStateOptions } from './types/comstock';
 
-interface StoreStateOptions<T> {
-    defaultValue: T;
-}
 
 export default function StoreState<T>(options: StoreStateOptions<T>) {
     return <S extends Store>(target: S, propertyKey: string) => {
