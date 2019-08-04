@@ -62,3 +62,13 @@ Vue.use(ExampleRootStore);
 ```
 
 And that's it!  Your root store should be available within your `*.vue` components as `this.$store`.
+
+
+# Planned features down the road to v1.0:
+
+* Remove the need for a RootStore 
+    * Already iffy, probably don't need it now, actually, just make your Store implementations singletons.
+* Add plugin API for Store, compatible in some way with vuex plugins (to reduce adoption pain).
+    * Can be done by either
+        * directly supporting vuex plugin api
+        * create comstock plugin api, write comstock plugin that provides compatibility with vuex plugins.
