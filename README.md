@@ -1,29 +1,43 @@
-**Comstock**, the simpler alternative to Vuex.
+# **Comstock**, the simpler alternative to Vuex.
 
-## **This is a work-in-progress**
+## **This is a work-in-progress.  use at your own risk**
 
-I've pretty much just got it working within a test vue-cli application, and have submitted the first commit to the repo at this point.  In no way is this production-ready.  **use at your own risk**.
+I pretty much wrote this library as a state management solution for my side project.  It works, but I'm not going to production with it yet.
+If you are successfully using this is production, please feel free to let me know on github, I'd love to hear about it!
 
 ---
 ## Background
 
 After getting frustrated with the amount of ceremony and boilerplate involved with using vuex, and after spending some time researching different store alternatives, I resolved that there must be a better way.
 
+Comstock is designed to be simple, while still allowing for single-responsibility state management.  This means your state is IN ONE PLACE for your application (or, a section of your application, in the event that it is a huge application).
+
+## But how did you get the name *Comstock*?
+
+Well, my thought process was something like this:
+
+* State management
+* Store
+* something similar to Store
+* Gold Mine
+* I read a book once about a famouse mine
+* __oh yeah!, the *Comstock Lode*__.
+* _does NPM have any packages named that?_
+* No?  Alright, we got ourselves a name, boys.
+
+No real significance to the name besides it was unique enough to remember, and it wasn't taken on NPM yet.  Well, that, and gold mines are somehow tangentially related (in my mind at least) to state management, apparently.
+
 ---
 
 # Documentation
 
-## RootStore
-
-The backbone of Comstock.  Your applicaton should have exactly one class extending this, and exactly one instance of that class.
-
 ## Store
 
-A store within Comstock.  Classes extending this should probably be properties on the RootStore implementation
+A store within Comstock.  Classes extending this should be a singleton.  See example below.
 
 ## StoreState
 
-Decorator used by Comstock to declare a property on the Store as stateful.  Any time this property is updated, the change propogate through Vue and into your UI.
+Decorator used by Comstock to declare a property on the Store as stateful.  Any time this property is updated, the changes propogate through Vue and into your UI.
 
 ## StoreStateOptions
 
@@ -32,43 +46,59 @@ Options to be passed to the `StoreState` decorator.
 # Example:
 
 ```ts
-//in ExampleRootStore.ts
+//in ExampleStore.ts
 
-import { RootStore, StoreState } from 'comstock';
+import { Store, StoreState } from 'comstock';
 
-class ExampleRootStore extends RootStore {
+class ExampleStore extends Store {
+
+    private static pExampleStore: ExampleStore | null;
 
     @StoreState({ defaultValue: 'foo' })
     public foo!: string;
-}
 
-// extend the Vue type declaration, so typescript knows the type of
-// this.$store within your vue components.
-declare module 'vue/types/vue' {
-    interface Vue {
-        $store: ExampleRootStore;
+    // Singleton pattern with private constructor and public static getter.
+    private constructor() {
+        super();
+    }
+
+    public static get instance(): ExampleStore {
+        // Ensures once the static instance is set, it never gets re-instantiated.
+        if (ExampleStore.pExampleStore == null) {
+            ExampleStore.pExampleStore = new ExampleStore();
+        }
+
+        return ExampleStore.pExampleStore;
     }
 }
 
-export default new ExampleRootStore();
+// Even though we used singleton pattern, just export the single instance. 
+export default ExampleStore.instance;
 ```
 ```ts
-//in main.ts (application entry point)
+//in ExampleComponent.ts, or ExampleComponent.vue (vue.js component)
 
-import Vue from 'vue';
-import ExampleRootStore from './ExampleRootStore';
+import { Component, Vue } from 'vue-property-decorator';
+import ExampleStore from './ExampleStore';
 
-Vue.use(ExampleRootStore);
+@Component({
+    template: `
+        <div class="foo-value">{{ foo }}</div>
+    `,
+})
+export default class FooDisplay extends Vue {
+    public get foo(): string {
+        return ExampleStore.foo;
+    }
+}
 ```
 
-And that's it!  Your root store should be available within your `*.vue` components as `this.$store`.
-
+And that's it!  Your store is a singleton, so any changes on the properties declares as `StoreState` will propogate through all the components that utilize them.
 
 # Planned features down the road to v1.0:
 
-* Remove the need for a RootStore 
-    * Already iffy, probably don't need it now, actually, just make your Store implementations singletons.
 * Add plugin API for Store, compatible in some way with vuex plugins (to reduce adoption pain).
     * Can be done by either
         * directly supporting vuex plugin api
         * create comstock plugin api, write comstock plugin that provides compatibility with vuex plugins.
+* Write decorator for making it easier to map properties within vue components.
