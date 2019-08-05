@@ -3,7 +3,7 @@
 ## **This is a work-in-progress.  use at your own risk**
 
 I pretty much wrote this library as a state management solution for my side project.  It works, but I'm not going to production with it yet.
-If you are successfully using this is production, please feel free to let me know on github, I'd love to hear about it!
+If you are successfully using this in production, please feel free to let me know on github, I'd love to hear about it!
 
 ---
 ## Background

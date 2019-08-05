@@ -1,6 +1,6 @@
 {
   "name": "comstock",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Simple alternative to Vuex, written in TypeScript",
   "main": "index.ts",
   "typings": "src/types/index.d.ts",
