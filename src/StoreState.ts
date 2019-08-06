@@ -7,6 +7,9 @@ export default function StoreState<T>(options: StoreStateOptions<T>) {
     return <S extends Store>(target: S, propertyKey: string) => {
         Object.defineProperty(target, propertyKey, {
             get(this: S): T {
+                if (!(propertyKey in this.defaultState)) {
+                    this.defaultState[propertyKey] = options.defaultValue;
+                }
                 if (!(propertyKey in this.vueInternal._data.$$state)) {
                     Vue.set(this.vueInternal._data.$$state, propertyKey, options.defaultValue);
                 }

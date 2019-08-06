@@ -6,6 +6,7 @@ export interface StoreStateOptions<T> {
 
 export declare class Store {
     [key: string]: any;
+    protected readonly defaultState: any;
     protected readonly vueInternal: Vue
 } 
 
