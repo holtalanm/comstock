@@ -1,6 +1,10 @@
 import Vue from 'vue';
-import { Store, StoreStateOptions, StorePluginValueChangeEvent } from './types/comstock';
+import Store from './Store';
+import { StorePluginValueChangeEvent } from './StorePlugin';
 
+export interface StoreStateOptions<T> {
+    defaultValue: T;
+}
 
 export default function StoreState<T>(options: StoreStateOptions<T>) {
     return <S extends Store>(target: S, propertyKey: string) => {
@@ -22,19 +26,11 @@ export default function StoreState<T>(options: StoreStateOptions<T>) {
                     oldValue,
                     newValue: value,
                 };
-                this.plugins.forEach((plugin) => {
-                    if (plugin.beforeValueChange !== undefined) {
-                        plugin.beforeValueChange(pluginEvent);
-                    }
-                });
+                this.fireBeforeValueChangeEvent(pluginEvent);
 
                 Vue.set(this.vueInternal._data.$$state, propertyKey, value);
 
-                this.plugins.forEach((plugin) => {
-                    if (plugin.afterValueChange !== undefined) {
-                        plugin.afterValueChange(pluginEvent);
-                    }
-                });
+                this.fireAfterValueChangeEvent(pluginEvent);
             },
         });
     };

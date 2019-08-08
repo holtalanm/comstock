@@ -2,6 +2,8 @@ import { shallowMount } from '@vue/test-utils';
 import BarDisplay from '../../test/BarDisplay';
 import BarInput from '../../test/BarInput';
 import FooStore from '../../test/FooStore';
+import TestStorePlugin from '../../test/TestStorePlugin';
+import { StorePluginValueChangeEvent } from '../StorePlugin';
 
 describe('Store Singleton', () => {
     test('text updates across components when state updated', () => {
@@ -41,5 +43,59 @@ describe('Store Singleton', () => {
         expect(input.bar).toEqual(initialBar);
         expect(displayWrapper.text()).toEqual(initialBar);
         expect((inputWrapper.element as HTMLInputElement).value).toEqual(initialBar);
+    });
+
+    test('plugin beforeEvent fires as expected', () => {
+        const beforeEvents: Array<StorePluginValueChangeEvent<any>> = [];
+        TestStorePlugin.registerBeforeCallback((evt) => {
+            beforeEvents.push(evt);
+        });
+
+        FooStore.resetState();
+
+        const newValue = 'bahahahaha';
+
+        FooStore.bar = newValue;
+
+        const expected: StorePluginValueChangeEvent<any> = {
+            store: FooStore,
+            property: 'bar',
+            newValue,
+            oldValue: 'bar',
+        };
+
+        expect(!!beforeEvents.find((evt) => {
+            return evt.newValue === expected.newValue &&
+                evt.oldValue === expected.oldValue &&
+                evt.property === expected.property;
+
+        })).toEqual(true);
+    });
+
+    test('plugin after event fires as expected', () => {
+        const afterEvents: Array<StorePluginValueChangeEvent<any>> = [];
+        TestStorePlugin.registerAfterCallback((evt) => {
+            afterEvents.push(evt);
+        });
+
+        FooStore.resetState();
+
+        const newValue = 'bahahahaha';
+
+        FooStore.bar = newValue;
+
+        const expected: StorePluginValueChangeEvent<any> = {
+            store: FooStore,
+            property: 'bar',
+            newValue,
+            oldValue: 'bar',
+        };
+
+        expect(!!afterEvents.find((evt) => {
+            return evt.newValue === expected.newValue &&
+                evt.oldValue === expected.oldValue &&
+                evt.property === expected.property;
+
+        })).toEqual(true);
     });
 });
