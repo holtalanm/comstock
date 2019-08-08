@@ -43,12 +43,46 @@ Decorator used by Comstock to declare a property on the Store as stateful.  Any 
 
 Options to be passed to the `StoreState` decorator.
 
+## StorePlugin
+
+Plugin that can accept property change events within the store.  Currently, can register a before change listener, or an after change listener, or both!
+
+## StoreOptions
+
+Options to pass to the store upon construction.  Currently just has a single property: plugins, which is an array of StorePlugin.
+
 # Example:
+
+```ts
+//in TestStorePlugin.ts
+
+import { StorePlugin, StorePluginValueChangeEvent } from 'comstock';
+
+export default class TestStorePlugin implements StorePlugin {
+    public beforeValueChange(event: StorePluginValueChangeEvent<any>): void {
+        console.log(`Before Property Change: ${JSON.stringify({
+            old: event.oldValue,
+            new: event.newValue,
+            property: event.property,
+        })}`);
+    }
+
+    public afterValueChange(event: StorePluginValueChangeEvent<any>): void {
+        console.log(`After Property Change: ${JSON.stringify({
+            old: event.oldValue,
+            new: event.newValue,
+            property: event.property,
+        })}`);
+    }
+}
+```
+
 
 ```ts
 //in ExampleStore.ts
 
 import { Store, StoreState } from 'comstock';
+import TestStorePlugin from './TestStorePlugin';
 
 class ExampleStore extends Store {
 
@@ -59,7 +93,9 @@ class ExampleStore extends Store {
 
     // Singleton pattern with private constructor and public static getter.
     private constructor() {
-        super();
+        super({
+            plugins: [new TestStorePlugin()],
+        });
     }
 
     public static get instance(): ExampleStore {
@@ -95,10 +131,8 @@ export default class FooDisplay extends Vue {
 
 And that's it!  Your store is a singleton, so any changes on the properties declares as `StoreState` will propogate through all the components that utilize them.
 
+## Example
+
 # Planned features down the road to v1.0:
 
-* Add plugin API for Store, compatible in some way with vuex plugins (to reduce adoption pain).
-    * Can be done by either
-        * directly supporting vuex plugin api
-        * create comstock plugin api, write comstock plugin that provides compatibility with vuex plugins.
 * Write decorator for making it easier to map properties within vue components.

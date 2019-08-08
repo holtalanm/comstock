@@ -1,6 +1,6 @@
 {
   "name": "comstock",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Simple alternative to Vuex, written in TypeScript",
   "main": "index.ts",
   "typings": "src/types/index.d.ts",
@@ -44,7 +44,8 @@
       "js",
       "ts",
       "json",
-      "vue"
+      "vue",
+      "d.ts"
     ],
     "transform": {
       ".*\\.(vue)$": "vue-jest",

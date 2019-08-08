@@ -1,4 +1,5 @@
 import { Store, StoreState } from '../index';
+import TestStorePlugin from './TestStorePlugin';
 
 class FooStore extends Store {
     private static pInstance: FooStore | null = null;
@@ -13,7 +14,9 @@ class FooStore extends Store {
     public zapArr!: string[];
 
     private constructor() {
-        super();
+        super({
+            plugins: [TestStorePlugin],
+        });
     }
 
     static get instance(): FooStore {
