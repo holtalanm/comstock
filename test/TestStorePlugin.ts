@@ -14,19 +14,19 @@ class TestStorePlugin implements StorePlugin {
         this.afterCallbacks.push(callback);
     }
 
-    public beforeValueChange(event: StorePluginValueChangeEvent<any>): void {
+    public async beforeValueChange(event: StorePluginValueChangeEvent<any>): Promise<void> {
         this.beforeCallbacks.forEach((cb) => {
             cb(event);
         });
     }
 
-    public afterValueChange(event: StorePluginValueChangeEvent<any>): void {
+    public async afterValueChange(event: StorePluginValueChangeEvent<any>): Promise<void> {
         this.afterCallbacks.forEach((cb) => {
             cb(event);
         });
     }
 
-    public onStoreInitialized(store: Store): void {
+    public async onStoreInitialized(store: Store): Promise<void> {
         store.setState({
             bar: 'zip',
             baz: 'zap',
