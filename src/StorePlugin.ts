@@ -8,6 +8,7 @@ export interface StorePluginValueChangeEvent<V> {
 }
 
 export interface StorePlugin {
+    onStoreInitialized?(store: Store): void;
     beforeValueChange?(event: StorePluginValueChangeEvent<any>): void;
     afterValueChange?(event: StorePluginValueChangeEvent<any>): void;
 }

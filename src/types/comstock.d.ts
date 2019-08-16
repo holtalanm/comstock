@@ -12,6 +12,8 @@ export declare class Store {
 
     constructor(options?: StoreOptions);
 
+    public setState(newState: any): void;
+    public resetState(): void;
     public fireBeforeValueChangeEvent(event: StorePluginValueChangeEvent<any>): void;
     public fireAfterValueChangeEvent(event: StorePluginValueChangeEvent<any>): void;
 } 
@@ -28,6 +30,7 @@ export declare interface StorePluginValueChangeEvent<V> {
 }
 
 export declare interface StorePlugin {
+    onStoreInitialized?(store: Store): void;
     beforeValueChange?(event: StorePluginValueChangeEvent<any>): void;
     afterValueChange?(event: StorePluginValueChangeEvent<any>): void;
 }
