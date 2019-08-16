@@ -31,6 +31,14 @@ export default class Store {
         this.onInitialize();
     }
 
+    public getState(): any {
+        const stateCopy: any = {};
+        Object.keys(this.vueInternal._data.$$state).forEach((prop) => {
+            stateCopy[prop] = this.vueInternal._data.$$state[prop];
+        });
+        return stateCopy;
+    }
+
     public setState(newState: any) {
         Object.keys(newState).forEach((prop) => {
             this[prop] = newState[prop];
