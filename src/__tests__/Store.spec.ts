@@ -12,6 +12,13 @@ describe('Store Singleton', () => {
         expect(FooStore.zapArr).toEqual(['zark', 'farfegnuggen']);
     });
 
+    test('getState returns copy of internal state', () => {
+        const storeState = FooStore.getState();
+        expect(storeState['bar']).toEqual('zip');
+        expect(storeState['baz']).toEqual('zap');
+        expect(storeState['zapArr']).toEqual(['zark', 'farfegnuggen']);
+    });
+
     test('text updates across components when state updated', () => {
         FooStore.resetState();
         const displayWrapper = shallowMount(BarDisplay);
