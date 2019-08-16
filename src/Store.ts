@@ -27,12 +27,18 @@ export default class Store {
         this.vueInternal.$watch(function() { return this._data.$$state; }, () => {
             // Do Nothing
         }, { deep: true, sync: true });
+
+        this.onInitialize();
+    }
+
+    public setState(newState: any) {
+        Object.keys(newState).forEach((prop) => {
+            this[prop] = newState[prop];
+        });
     }
 
     public resetState() {
-        Object.keys(this.defaultState).forEach((prop) => {
-            this[prop] = this.defaultState[prop];
-        });
+        this.setState(this.defaultState);
     }
 
     public fireBeforeValueChangeEvent(event: StorePluginValueChangeEvent<any>): void {
@@ -47,6 +53,14 @@ export default class Store {
         this.plugins.forEach((plugin) => {
             if (plugin.afterValueChange !== undefined) {
                 plugin.afterValueChange(event);
+            }
+        });
+    }
+
+    private onInitialize(): void {
+        this.plugins.forEach((plugin) => {
+            if (plugin.onStoreInitialized !== undefined) {
+                plugin.onStoreInitialized(this);
             }
         });
     }

@@ -1,4 +1,5 @@
 import { StorePlugin, StorePluginValueChangeEvent } from '../src/StorePlugin';
+import Store from '../src/Store';
 
 class TestStorePlugin implements StorePlugin {
 
@@ -22,6 +23,14 @@ class TestStorePlugin implements StorePlugin {
     public afterValueChange(event: StorePluginValueChangeEvent<any>): void {
         this.afterCallbacks.forEach((cb) => {
             cb(event);
+        });
+    }
+
+    public onStoreInitialized(store: Store): void {
+        store.setState({
+            bar: 'zip',
+            baz: 'zap',
+            zapArr: ['zark', 'farfegnuggen'],
         });
     }
 }

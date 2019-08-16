@@ -6,7 +6,14 @@ import TestStorePlugin from '../../test/TestStorePlugin';
 import { StorePluginValueChangeEvent } from '../StorePlugin';
 
 describe('Store Singleton', () => {
+    test('onStoreInitialized fires on store construction', () => {
+        expect(FooStore.bar).toEqual('zip');
+        expect(FooStore.baz).toEqual('zap');
+        expect(FooStore.zapArr).toEqual(['zark', 'farfegnuggen']);
+    });
+
     test('text updates across components when state updated', () => {
+        FooStore.resetState();
         const displayWrapper = shallowMount(BarDisplay);
         const inputWrapper = shallowMount(BarInput);
         const display: BarDisplay = displayWrapper.vm as any as BarDisplay;
