@@ -30,9 +30,9 @@ export declare interface StorePluginValueChangeEvent<V> {
 }
 
 export declare interface StorePlugin {
-    onStoreInitialized?(store: Store): void;
-    beforeValueChange?(event: StorePluginValueChangeEvent<any>): void;
-    afterValueChange?(event: StorePluginValueChangeEvent<any>): void;
+    onStoreInitialized?(store: Store): Promise<void>;
+    beforeValueChange?(event: StorePluginValueChangeEvent<any>): Promise<void>;
+    afterValueChange?(event: StorePluginValueChangeEvent<any>): Promise<void>;
 }
 
 export declare interface StoreOptions {
