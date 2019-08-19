@@ -1,5 +1,4 @@
-import { StorePlugin, StorePluginValueChangeEvent } from '../src/StorePlugin';
-import Store from '../src/Store';
+import { Store, StorePlugin, StorePluginValueChangeEvent } from '../index';
 
 class TestStorePlugin implements StorePlugin {
 
