@@ -3,7 +3,7 @@ import BarDisplay from '../../test/BarDisplay';
 import BarInput from '../../test/BarInput';
 import FooStore from '../../test/FooStore';
 import TestStorePlugin from '../../test/TestStorePlugin';
-import { StorePluginValueChangeEvent } from '../StorePlugin';
+import { StorePluginValueChangeEvent } from '../../index';
 
 describe('Store Singleton', () => {
     test('onStoreInitialized fires on store construction', () => {
