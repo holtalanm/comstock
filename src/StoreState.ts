@@ -28,13 +28,13 @@ export default function StoreState<T>(options: StoreStateOptions<T>) {
                 if (!(propertyKey in this.defaultState)) {
                     this.defaultState[propertyKey] = options.defaultValue;
                 }
-                if (!(propertyKey in this.vueInternal._data.$$state)) {
-                    Vue.set(this.vueInternal._data.$$state, propertyKey, options.defaultValue);
+                if (!(propertyKey in (this.vueInternal as any)._data.$$state)) {
+                    Vue.set((this.vueInternal as any)._data.$$state, propertyKey, options.defaultValue);
                 }
-                return this.vueInternal._data.$$state[propertyKey] as T;
+                return (this.vueInternal as any)._data.$$state[propertyKey] as T;
             },
             set(this: S, value: T) {
-                const oldValue = this.vueInternal._data.$$state[propertyKey];
+                const oldValue = (this.vueInternal as any)._data.$$state[propertyKey];
                 const pluginEvent: StorePluginValueChangeEvent<T> = {
                     store: this as Store,
                     property: propertyKey,
@@ -43,7 +43,7 @@ export default function StoreState<T>(options: StoreStateOptions<T>) {
                 };
                 this.fireBeforeValueChangeEvent(pluginEvent);
 
-                Vue.set(this.vueInternal._data.$$state, propertyKey, value);
+                Vue.set((this.vueInternal as any)._data.$$state, propertyKey, value);
 
                 this.fireAfterValueChangeEvent(pluginEvent);
             },
