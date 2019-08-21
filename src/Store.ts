@@ -1,18 +1,5 @@
-import Vue from 'vue';
+import Vue, {WatchOptions} from 'vue';
 import { StorePlugin, StorePluginValueChangeEvent } from './StorePlugin';
-
-declare module 'vue/types/vue' {
-    interface Vue {
-        _data: any;
-    }
-}
-
-
-declare module 'vue/types/options' {
-    interface WatchOptions {
-        sync: boolean;
-    }
-}
 
 /**
  * Options to be passed into Store constructor.
@@ -46,9 +33,9 @@ export default class Store {
                 this.plugins = [...options.plugins];
             }
         }
-        this.vueInternal.$watch(function() { return this._data.$$state; }, () => {
+        this.vueInternal.$watch(function() { return (this as any)._data.$$state; }, () => {
             // Do Nothing
-        }, { deep: true, sync: true });
+        }, { deep: true, sync: true } as WatchOptions);
 
         this.onInitialize();
     }
@@ -61,8 +48,8 @@ export default class Store {
      */
     public getState(): any {
         const stateCopy: any = {};
-        Object.keys(this.vueInternal._data.$$state).forEach((prop) => {
-            stateCopy[prop] = this.vueInternal._data.$$state[prop];
+        Object.keys((this.vueInternal as any)._data.$$state).forEach((prop) => {
+            stateCopy[prop] = (this.vueInternal as any)._data.$$state[prop];
         });
         return stateCopy;
     }
