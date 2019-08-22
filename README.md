@@ -1,4 +1,5 @@
 # **Comstock**, the simpler alternative to Vuex.
+[![npm version](https://img.shields.io/npm/v/comstock.svg?style=flat)](https://www.npmjs.com/package/comstock "View this project on npm")
 
 ## **This is a work-in-progress.  use at your own risk**
 
