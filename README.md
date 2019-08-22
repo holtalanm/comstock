@@ -6,6 +6,10 @@
 I pretty much wrote this library as a state management solution for my side project.  It works, but I'm not going to production with it yet.
 If you are successfully using this in production, please feel free to let me know on github, I'd love to hear about it!
 
+## **Update**
+
+If you are looking for a plugin to persist state changes to a storage (like sessionStorage) that will transparently handle reloadng the state on Store intialization, take a look at: https://www.npmjs.com/package/comstock-storage
+
 ---
 ## Background
 
@@ -131,8 +135,6 @@ export default class FooDisplay extends Vue {
 ```
 
 And that's it!  Your store is a singleton, so any changes on the properties declares as `StoreState` will propogate through all the components that utilize them.
-
-## Example
 
 # Planned features down the road to v1.0:
 
