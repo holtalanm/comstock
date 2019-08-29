@@ -1,5 +1,6 @@
 import Vue, {WatchOptions} from 'vue';
 import { StorePlugin, StorePluginValueChangeEvent } from './StorePlugin';
+import {StoreStateOptions} from '..';
 
 /**
  * Options to be passed into Store constructor.
@@ -11,6 +12,11 @@ export interface StoreOptions {
     plugins?: StorePlugin[];
 }
 
+export interface Converter<T> {
+    toJson: (value: T) => string;
+    fromJson: (value: string) => T;
+}
+
 /**
  * A store within Comstock.  This object will be responsible for keeping track of the state,
  * and firing events to plugins when required.
@@ -18,6 +24,7 @@ export interface StoreOptions {
 export default class Store {
     [key: string]: any;
     protected readonly defaultState: any = {};
+    protected readonly converters: { [id: string]: Converter<any> } = {};
     protected readonly vueInternal: Vue = new Vue({
         data() {
             return {
@@ -99,6 +106,21 @@ export default class Store {
                 plugin.afterValueChange(event);
             }
         });
+    }
+
+    protected setupPropertyIfNeeded(propertyName: string, options: StoreStateOptions<any>) {
+        if (!(propertyName in this.defaultState)) {
+            this.defaultState[propertyName] = options.defaultValue;
+        }
+        if (!(propertyName in (this.vueInternal as any)._data.$$state)) {
+            Vue.set((this.vueInternal as any)._data.$$state, propertyName, options.defaultValue);
+        }
+        if (!(propertyName in this.converters)) {
+            this.converters[propertyName] = {
+                toJson: options.toJson || JSON.stringify,
+                fromJson: options.fromJson || JSON.parse,
+            };
+        }
     }
 
     private onInitialize(): void {
