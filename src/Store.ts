@@ -1,6 +1,6 @@
 import Vue, {WatchOptions} from 'vue';
 import { StorePlugin, StorePluginValueChangeEvent } from './StorePlugin';
-import {StoreStateOptions} from '..';
+import {StoreStateOptions} from './StoreState';
 
 /**
  * Options to be passed into Store constructor.
