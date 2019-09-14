@@ -74,6 +74,10 @@ describe('Store Singleton', () => {
         const expected: StorePluginValueChangeEvent<any> = {
             store: FooStore,
             property: 'bar',
+            converter: {
+                toJson: JSON.stringify,
+                fromJson: JSON.parse,
+            },
             newValue,
             oldValue: 'bar',
         };
@@ -101,6 +105,10 @@ describe('Store Singleton', () => {
         const expected: StorePluginValueChangeEvent<any> = {
             store: FooStore,
             property: 'bar',
+            converter: {
+                toJson: JSON.stringify,
+                fromJson: JSON.parse,
+            },
             newValue,
             oldValue: 'bar',
         };
@@ -111,5 +119,113 @@ describe('Store Singleton', () => {
                 evt.property === expected.property;
 
         })).toEqual(true);
+    });
+
+    test('property without converter toJson defined defaults to JSON.stringify', () => {
+        const afterEvents: Array<StorePluginValueChangeEvent<any>> = [];
+        TestStorePlugin.registerAfterCallback((evt) => {
+            afterEvents.push(evt);
+        });
+
+        FooStore.resetState();
+
+        FooStore.bar = 'boogabooga';
+
+        const event = afterEvents.find((evt) => {
+            return evt.property === 'bar' &&
+                evt.oldValue === 'bar' &&
+                evt.newValue === FooStore.bar;
+        });
+
+        expect(event).toBeDefined();
+        expect(event).toBeTruthy();
+
+        if (!!event) {
+            const converter = event.converter;
+
+            const toStringResult = converter.toJson(FooStore.bar);
+            expect(toStringResult).toEqual(JSON.stringify(FooStore.bar));
+        }
+    });
+
+    test('property without converter fromJson defined defaults to JSON.parse', () => {
+        const afterEvents: Array<StorePluginValueChangeEvent<any>> = [];
+        TestStorePlugin.registerAfterCallback((evt) => {
+            afterEvents.push(evt);
+        });
+
+        FooStore.resetState();
+
+        FooStore.bar = 'boogabooga';
+
+        const event = afterEvents.find((evt) => {
+            return evt.property === 'bar' &&
+                evt.oldValue === 'bar' &&
+                evt.newValue === FooStore.bar;
+        });
+
+        expect(event).toBeDefined();
+        expect(event).toBeTruthy();
+
+        if (!!event) {
+            const converter = event.converter;
+
+            const fromStringResult = converter.fromJson(converter.toJson(FooStore.bar));
+            expect(fromStringResult).toEqual(JSON.parse(converter.toJson(FooStore.bar)));
+        }
+    });
+
+    test('property with converter toJson defined uses that for converter', () => {
+        const afterEvents: Array<StorePluginValueChangeEvent<any>> = [];
+        TestStorePlugin.registerAfterCallback((evt) => {
+            afterEvents.push(evt);
+        });
+
+        FooStore.resetState();
+
+        FooStore.baz = 'boogabooga';
+
+        const event = afterEvents.find((evt) => {
+            return evt.property === 'baz' &&
+                evt.oldValue === 'baz' &&
+                evt.newValue === FooStore.baz;
+        });
+
+        expect(event).toBeDefined();
+        expect(event).toBeTruthy();
+
+        if (!!event) {
+            const converter = event.converter;
+
+            const toStringResult = event.converter.toJson(FooStore.baz);
+            expect(toStringResult).toEqual(`${FooStore.baz}_toString`);
+        }
+    });
+
+    test('property with conveter fromJson defined uses that for converter', () => {
+        const afterEvents: Array<StorePluginValueChangeEvent<any>> = [];
+        TestStorePlugin.registerAfterCallback((evt) => {
+            afterEvents.push(evt);
+        });
+
+        FooStore.resetState();
+
+        FooStore.baz = 'boogabooga';
+
+        const event = afterEvents.find((evt) => {
+            return evt.property === 'baz' &&
+                evt.oldValue === 'baz' &&
+                evt.newValue === FooStore.baz;
+        });
+
+        expect(event).toBeDefined();
+        expect(event).toBeTruthy();
+
+        if (!!event) {
+            const converter = event.converter;
+
+            const fromStringResult = event.converter.fromJson(`${FooStore.baz}_toString`);
+            expect(fromStringResult).toEqual(FooStore.baz);
+        }
     });
 });

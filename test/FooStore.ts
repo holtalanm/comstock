@@ -7,7 +7,11 @@ class FooStore extends Store {
     @StoreState({ defaultValue: 'bar' })
     public bar!: string;
 
-    @StoreState({ defaultValue: 'baz' })
+    @StoreState({
+        defaultValue: 'baz',
+        toJson: (value: string) => `${value}_toString`,
+        fromJson: (value: string) => value.replace('_toString', ''),
+    })
     public baz!: string;
 
     @StoreState({ defaultValue: [] })

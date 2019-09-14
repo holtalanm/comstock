@@ -1,4 +1,4 @@
-import Store from './Store';
+import Store, {Converter} from './Store';
 
 /**
  * Event fired by the Store on a value change.
@@ -7,6 +7,7 @@ import Store from './Store';
 export interface StorePluginValueChangeEvent<V> {
     store: Store;
     property: string;
+    converter: Converter<V>;
     oldValue: V;
     newValue: V;
 }
